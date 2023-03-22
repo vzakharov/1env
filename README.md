@@ -44,3 +44,5 @@ That’s it! You can now access your secrets via `process.env` just like you wou
 1. Whenever you change your `.secrets.json` file, the execution will fail again, indicating which value to set for `ONE_ENV_ENCRYPTED`.
 
 2. The execution will also fail if you don’t add `.secrets.json` to your `.gitignore` file. You’re welcome.
+
+3. The `.secrets.json` file is only needed while you’re developing your project, so that you can easily convert your secrets into the public `ONE_ENV_ENCRYPTED` variable. You can safely ignore/delete it when deploying your project to production.
