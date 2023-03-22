@@ -1,4 +1,4 @@
-import { ensure } from "../../vovas-utils-ts/src";
+import { ensure } from "vovas-utils";
 import { decrypt } from "./encryption";
 
 export function loadEnvs() {

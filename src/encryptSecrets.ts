@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { ensure, logger } from "../../vovas-utils-ts/src";
+import { ensure } from "vovas-utils";
 import { encrypt } from './encryption';
 
 export function encryptSecrets(filename: string = '.secrets.json') {

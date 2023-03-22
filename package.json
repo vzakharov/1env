@@ -23,9 +23,11 @@
   "author": "Vova Zakharov <vzakharov@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/lodash": "^4.14.191",
     "@types/node": "^18.14.2",
     "typescript": "^4.9.5",
     "unbuild": "^1.1.2"
+  },
+  "dependencies": {
+    "vovas-utils": "^0.0.35"
   }
 }
