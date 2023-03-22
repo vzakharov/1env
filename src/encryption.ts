@@ -1,16 +1,17 @@
 import crypto from 'crypto';
 
 export function encrypt(plain: string, password: string) {
-  const cipher = crypto.createCipheriv('aes-256-gcm', createKey(password), Buffer.alloc(16, 0));
+  const iv = crypto.randomBytes(16);
+  const cipher = crypto.createCipheriv('aes-256-gcm', createKey(password), iv);
   let encrypted = cipher.update(plain, 'utf8', 'hex');
   encrypted += cipher.final('hex');
   const authTag = cipher.getAuthTag().toString('hex');
-  return `${encrypted}_${authTag}`;
+  return `${encrypted}_${authTag}_${iv.toString('hex')}`;
 }
 
 export function decrypt(encrypted_authTag: string, password: string) {
-  const [ encrypted, authTag ] = encrypted_authTag.split('_');
-  const decipher = crypto.createDecipheriv('aes-256-gcm', createKey(password), Buffer.alloc(16, 0));
+  const [ encrypted, authTag, iv ] = encrypted_authTag.split('_');
+  const decipher = crypto.createDecipheriv('aes-256-gcm', createKey(password), Buffer.from(iv, 'hex'));
   decipher.setAuthTag(Buffer.from(authTag, 'hex'));
   let decrypted = decipher.update(encrypted, 'hex', 'utf8');
   decrypted += decipher.final('utf8');
