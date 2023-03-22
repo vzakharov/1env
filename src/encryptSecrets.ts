@@ -38,7 +38,7 @@ export function encryptSecrets(filename: string = '.secrets.json') {
       throw new Error(`ONE_ENV_SECRET environment variable is not set`);
     } )
 
-  const encrypted= encrypt(JSON.stringify(secrets), key);
+  const encrypted = encrypt(JSON.stringify(secrets), key);
 
   if ( process.env.ONE_ENV_ENCRYPTED !== encrypted ) {
 //     throw new Error(`1env public environment variables are not set or outdated, please update as follows:
