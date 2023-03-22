@@ -1,7 +1,7 @@
 {
   "name": "1env",
-  "version": "0.0.6",
-  "description": "Encrypt all your secrets in one environment variable",
+  "version": "0.0.7",
+  "description": "One secret to encrypt them all",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
