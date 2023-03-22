@@ -48,7 +48,7 @@ function encryptSecrets(filename = ".secrets.json") {
   return encrypted;
 }
 
-function loadEnvs() {
+function loadSecrets() {
   const key = vovasUtils.ensure(process.env.ONE_ENV_KEY);
   const encrypted = vovasUtils.ensure(process.env.ONE_ENV_ENCRYPTED);
   vovasUtils.ensure(process.env.ONE_ENV_AUTH_TAG);
@@ -60,4 +60,4 @@ function loadEnvs() {
 exports.decrypt = decrypt;
 exports.encrypt = encrypt;
 exports.encryptSecrets = encryptSecrets;
-exports.loadEnvs = loadEnvs;
+exports.loadSecrets = loadSecrets;

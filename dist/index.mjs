@@ -46,7 +46,7 @@ function encryptSecrets(filename = ".secrets.json") {
   return encrypted;
 }
 
-function loadEnvs() {
+function loadSecrets() {
   const key = ensure(process.env.ONE_ENV_KEY);
   const encrypted = ensure(process.env.ONE_ENV_ENCRYPTED);
   ensure(process.env.ONE_ENV_AUTH_TAG);
@@ -55,4 +55,4 @@ function loadEnvs() {
   Object.assign(process.env, parsed);
 }
 
-export { decrypt, encrypt, encryptSecrets, loadEnvs };
+export { decrypt, encrypt, encryptSecrets, loadSecrets };

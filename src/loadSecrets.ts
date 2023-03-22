@@ -1,7 +1,7 @@
 import { ensure } from "vovas-utils";
 import { decrypt } from "./encryption";
 
-export function loadEnvs() {
+export function loadSecrets() {
 
   // 1. Reads the (secret) process.env.ONE_ENV_KEY variable for the decryption key
   // 2. Reads the (non-secret) process.env.ONE_ENV_ENCRYPTED variable for an encrypted string concealing the JSON with all our secrets

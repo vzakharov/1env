@@ -3,6 +3,6 @@ declare function decrypt(encrypted_authTag: string, password: string): string;
 
 declare function encryptSecrets(filename?: string): string | undefined;
 
-declare function loadEnvs(): void;
+declare function loadSecrets(): void;
 
-export { decrypt, encrypt, encryptSecrets, loadEnvs };
+export { decrypt, encrypt, encryptSecrets, loadSecrets };

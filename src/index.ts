@@ -1,3 +1,3 @@
 export * from './encryption';
 export * from './encryptSecrets';
-export * from './loadEnvs';
+export * from './loadSecrets';
