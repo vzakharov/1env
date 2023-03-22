@@ -1,4 +1,4 @@
-# One non-secret environment variable for all your secrets
+# One secret to encrypt them all
 
 If you work for a responsible company, you probably have to store your secrets in a secure way. Due to this, sometimes, when you need to add or change a secret, you have to go through a lot of steps involving other people, and it can be a pain in the ass.
 
