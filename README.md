@@ -27,7 +27,7 @@ encryptSecrets();
 loadSecrets();
 ```
 
-4. Set an environment variable named `ONE_ENV_KEY` with a secure enough value. 
+4. Set an environment variable named `ONE_ENV_SECRET` with a secure enough value. Alternatively, run the code above and it will suggest a value for you while throwing an error.
 
 **This is the key that will be used to encrypt and decrypt your secrets, and the only one you will have to worry about.**
 

@@ -38,7 +38,7 @@ function encryptSecrets(filename = ".secrets.json") {
     throw new Error(`${secretsFilename} has to be git-ignored, but it is not in ${gitIgnoreFilename}`);
   }
   const secrets = JSON.parse(fs.readFileSync(secretsFilename, "utf8"));
-  const key = vovasUtils.ensure(process.env.ONE_ENV_KEY);
+  const key = vovasUtils.ensure(process.env.ONE_ENV_SECRET);
   const encrypted = encrypt(JSON.stringify(secrets), key);
   if (process.env.ONE_ENV_ENCRYPTED !== encrypted) {
     throw new Error(`1env environment variables are not set or outdated, please update as follows:
@@ -49,7 +49,7 @@ function encryptSecrets(filename = ".secrets.json") {
 }
 
 function loadSecrets() {
-  const key = vovasUtils.ensure(process.env.ONE_ENV_KEY);
+  const key = vovasUtils.ensure(process.env.ONE_ENV_SECRET);
   const encrypted = vovasUtils.ensure(process.env.ONE_ENV_ENCRYPTED);
   vovasUtils.ensure(process.env.ONE_ENV_AUTH_TAG);
   const decrypted = decrypt(encrypted, key);
