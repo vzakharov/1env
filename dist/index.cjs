@@ -5,15 +5,16 @@ const fs = require('fs');
 const vovasUtils = require('vovas-utils');
 
 function encrypt(plain, password) {
-  const cipher = crypto.createCipheriv("aes-256-gcm", createKey(password), Buffer.alloc(16, 0));
+  const iv = crypto.randomBytes(16);
+  const cipher = crypto.createCipheriv("aes-256-gcm", createKey(password), iv);
   let encrypted = cipher.update(plain, "utf8", "hex");
   encrypted += cipher.final("hex");
   const authTag = cipher.getAuthTag().toString("hex");
-  return `${encrypted}_${authTag}`;
+  return `${encrypted}_${authTag}_${iv.toString("hex")}`;
 }
 function decrypt(encrypted_authTag, password) {
-  const [encrypted, authTag] = encrypted_authTag.split("_");
-  const decipher = crypto.createDecipheriv("aes-256-gcm", createKey(password), Buffer.alloc(16, 0));
+  const [encrypted, authTag, iv] = encrypted_authTag.split("_");
+  const decipher = crypto.createDecipheriv("aes-256-gcm", createKey(password), Buffer.from(iv, "hex"));
   decipher.setAuthTag(Buffer.from(authTag, "hex"));
   let decrypted = decipher.update(encrypted, "hex", "utf8");
   decrypted += decipher.final("utf8");
@@ -38,12 +39,21 @@ function encryptSecrets(filename = ".secrets.json") {
     throw new Error(`${secretsFilename} has to be git-ignored, but it is not in ${gitIgnoreFilename}`);
   }
   const secrets = JSON.parse(fs.readFileSync(secretsFilename, "utf8"));
-  const key = vovasUtils.ensure(process.env.ONE_ENV_SECRET);
+  const key = vovasUtils.$if(process.env.ONE_ENV_SECRET, vovasUtils.isDefined, vovasUtils.itself).else(() => {
+    const key2 = crypto.randomBytes(32).toString("hex");
+    console.log(`\x1B[33mONE_ENV_SECRET=${key2}\x1B[0m`);
+    console.log(`\x1B[31mSet the ONE_ENV_SECRET environment variable to the above value, then run the command again.
+
+IMPORTANT: THIS VALUE IS SECRET AND SHOULD NOT BE SHARED\x1B[0m`);
+    throw new Error(`ONE_ENV_SECRET environment variable is not set`);
+  });
   const encrypted = encrypt(JSON.stringify(secrets), key);
   if (process.env.ONE_ENV_ENCRYPTED !== encrypted) {
-    throw new Error(`1env environment variables are not set or outdated, please update as follows:
+    console.log(`\x1B[33mONE_ENV_ENCRYPTED=${encrypted}\x1B[0m`);
+    console.log(`\x1B[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again.
 
-\x1B[33mONE_ENV_ENCRYPTED=${encrypted}\x1B[0m`);
+Note: this value is public and can be shared\x1B[0m`);
+    throw new Error(`ONE_ENV_ENCRYPTED environment variable is not set`);
   }
   return encrypted;
 }
