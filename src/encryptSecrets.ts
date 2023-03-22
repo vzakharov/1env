@@ -34,7 +34,7 @@ export function encryptSecrets(filename: string = '.secrets.json') {
       // Create a new key, show it to the user, and throw an error
       const key = crypto.randomBytes(32).toString('hex');
       console.log(`\x1b[33mONE_ENV_SECRET=${key}\x1b[0m`);
-      console.log(`\x1b[31mSet the ONE_ENV_SECRET environment variable to the above value, then run the command again.\n\nIMPORTANT: THIS VALUE IS SECRET AND SHOULD NOT BE SHARED\x1b[0m`);
+      console.log(`\x1b[31mSet the ONE_ENV_SECRET environment variable to the above value, then run the command again. IMPORTANT: THIS VALUE IS SECRET AND SHOULD NOT BE SHARED\x1b[0m`);
       throw new Error(`ONE_ENV_SECRET environment variable is not set`);
     } )
 
@@ -45,7 +45,7 @@ export function encryptSecrets(filename: string = '.secrets.json') {
 
 // \x1b[33mONE_ENV_ENCRYPTED=${encrypted}\x1b[0m`);
     console.log(`\x1b[33mONE_ENV_ENCRYPTED=${encrypted}\x1b[0m`);
-    console.log(`\x1b[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again.\n\nNote: this value is public and can be shared\x1b[0m`);
+    console.log(`\x1b[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again. Note: this value is public and can be shared\x1b[0m`);
     throw new Error(`ONE_ENV_ENCRYPTED environment variable is not set`);
   }
 

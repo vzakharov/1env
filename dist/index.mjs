@@ -40,17 +40,13 @@ function encryptSecrets(filename = ".secrets.json") {
   const key = $if(process.env.ONE_ENV_SECRET, isDefined, itself).else(() => {
     const key2 = crypto.randomBytes(32).toString("hex");
     console.log(`\x1B[33mONE_ENV_SECRET=${key2}\x1B[0m`);
-    console.log(`\x1B[31mSet the ONE_ENV_SECRET environment variable to the above value, then run the command again.
-
-IMPORTANT: THIS VALUE IS SECRET AND SHOULD NOT BE SHARED\x1B[0m`);
+    console.log(`\x1B[31mSet the ONE_ENV_SECRET environment variable to the above value, then run the command again. IMPORTANT: THIS VALUE IS SECRET AND SHOULD NOT BE SHARED\x1B[0m`);
     throw new Error(`ONE_ENV_SECRET environment variable is not set`);
   });
   const encrypted = encrypt(JSON.stringify(secrets), key);
   if (process.env.ONE_ENV_ENCRYPTED !== encrypted) {
     console.log(`\x1B[33mONE_ENV_ENCRYPTED=${encrypted}\x1B[0m`);
-    console.log(`\x1B[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again.
-
-Note: this value is public and can be shared\x1B[0m`);
+    console.log(`\x1B[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again. Note: this value is public and can be shared\x1B[0m`);
     throw new Error(`ONE_ENV_ENCRYPTED environment variable is not set`);
   }
   return encrypted;
