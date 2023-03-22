@@ -1,6 +1,6 @@
 {
   "name": "1env",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Encrypt all your secrets in one environment variable",
   "exports": {
     ".": {
