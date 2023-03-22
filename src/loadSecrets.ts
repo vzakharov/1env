@@ -9,7 +9,6 @@ export function loadSecrets() {
 
   const key = ensure(process.env.ONE_ENV_SECRET);
   const encrypted = ensure(process.env.ONE_ENV_ENCRYPTED);
-  const authTag = ensure(process.env.ONE_ENV_AUTH_TAG);
   const decrypted = decrypt(encrypted, key);
   const parsed = JSON.parse(decrypted);
   Object.assign(process.env, parsed);
