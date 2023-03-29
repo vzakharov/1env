@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import fs from 'fs';
-import { $if, isDefined, itself } from "vovas-utils";
+import { $if, is, give } from "vovas-utils";
 import { encrypt } from './encryption';
 
 export function encryptSecrets(filename: string = '.secrets.json') {
@@ -29,7 +29,7 @@ export function encryptSecrets(filename: string = '.secrets.json') {
   const secrets = JSON.parse(fs.readFileSync(secretsFilename, 'utf8'));
 
   const key = 
-    $if( process.env.ONE_ENV_SECRET, isDefined, itself )
+    $if( process.env.ONE_ENV_SECRET, is.defined, give.itself )
     .else( () => {
       // Create a new key, show it to the user, and throw an error
       const key = crypto.randomBytes(32).toString('hex');
@@ -41,9 +41,7 @@ export function encryptSecrets(filename: string = '.secrets.json') {
   let encrypted = encrypt(JSON.stringify(secrets), key);
 
   if ( process.env.ONE_ENV_ENCRYPTED !== encrypted ) {
-    // Delete process.env.ONE_ENV_ENCRYPTED and recalculate the encrypted value (to use a new iv)
-    delete process.env.ONE_ENV_ENCRYPTED;
-    encrypted = encrypt(JSON.stringify(secrets), key);
+    encrypted = encrypt(JSON.stringify(secrets), key, true);
     // TODO: This looks ugly, so we'll probably want to refactor it
     console.log(`\x1b[33mONE_ENV_ENCRYPTED=${encrypted}\x1b[0m`);
     console.log(`\x1b[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again. Note: this value is public and can be shared\x1b[0m`);

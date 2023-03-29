@@ -1,10 +1,10 @@
 import crypto from 'crypto';
 import fs from 'fs';
-import { $if, isDefined, itself, ensure } from 'vovas-utils';
+import { $if, is, give, ensure } from 'vovas-utils';
 
-function encrypt(plain, password) {
+function encrypt(plain, password, updateIv = false) {
   const ivString = process.env.ONE_ENV_ENCRYPTED?.split("_")[2];
-  const iv = ivString ? Buffer.from(ivString, "hex") : crypto.randomBytes(16);
+  const iv = ivString && !updateIv ? Buffer.from(ivString, "hex") : crypto.randomBytes(16);
   const cipher = crypto.createCipheriv("aes-256-gcm", createKey(password), iv);
   let encrypted = cipher.update(plain, "utf8", "hex");
   encrypted += cipher.final("hex");
@@ -38,14 +38,15 @@ function encryptSecrets(filename = ".secrets.json") {
     throw new Error(`${secretsFilename} has to be git-ignored, but it is not in ${gitIgnoreFilename}`);
   }
   const secrets = JSON.parse(fs.readFileSync(secretsFilename, "utf8"));
-  const key = $if(process.env.ONE_ENV_SECRET, isDefined, itself).else(() => {
+  const key = $if(process.env.ONE_ENV_SECRET, is.defined, give.itself).else(() => {
     const key2 = crypto.randomBytes(32).toString("hex");
     console.log(`\x1B[33mONE_ENV_SECRET=${key2}\x1B[0m`);
     console.log(`\x1B[31mSet the ONE_ENV_SECRET environment variable to the above value, then run the command again. IMPORTANT: THIS VALUE IS SECRET AND SHOULD NOT BE SHARED\x1B[0m`);
     throw new Error(`ONE_ENV_SECRET environment variable is not set`);
   });
-  const encrypted = encrypt(JSON.stringify(secrets), key);
+  let encrypted = encrypt(JSON.stringify(secrets), key);
   if (process.env.ONE_ENV_ENCRYPTED !== encrypted) {
+    encrypted = encrypt(JSON.stringify(secrets), key, true);
     console.log(`\x1B[33mONE_ENV_ENCRYPTED=${encrypted}\x1B[0m`);
     console.log(`\x1B[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again. Note: this value is public and can be shared\x1B[0m`);
     throw new Error(`ONE_ENV_ENCRYPTED environment variable is not set`);

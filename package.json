@@ -28,6 +28,6 @@
     "unbuild": "^1.1.2"
   },
   "dependencies": {
-    "vovas-utils": "^0.0.36"
+    "vovas-utils": "^0.0.37"
   }
 }

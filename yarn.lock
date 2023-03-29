@@ -1101,10 +1101,10 @@ update-browserslist-db@^1.0.10:
     escalade "^3.1.1"
     picocolors "^1.0.0"
 
-vovas-utils@^0.0.36:
-  version "0.0.36"
-  resolved "https://registry.yarnpkg.com/vovas-utils/-/vovas-utils-0.0.36.tgz#ed09ca24c2505071d82405e750f8e6374564a641"
-  integrity sha512-RcuyyZG8pCfErX+XfASz5/SkGM70rhJASvhPPmur0OC8MFyaMzyfkUztCYkYIT1AL/PFykDWWSB/YVGrNrd8lQ==
+vovas-utils@^0.0.37:
+  version "0.0.37"
+  resolved "https://registry.yarnpkg.com/vovas-utils/-/vovas-utils-0.0.37.tgz#6d04c8b3dc055b064feef5d939bbeff258ead7c5"
+  integrity sha512-tC5VVV4UutvGMxtrfDs3K23RAr8ca/PICD3QUodtnGEykgNfwFdqzTjGxlVN7cMxzwLT3vgXOZuC2zr2lhasgQ==
   dependencies:
     js-yaml "^4.1.0"
     lodash "^4.17.21"
