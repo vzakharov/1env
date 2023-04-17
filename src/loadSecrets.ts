@@ -1,5 +1,5 @@
 import { ensure } from "vovas-utils";
-import { decrypt } from "./encryption";
+import { EncryptedDataJson, decrypt } from "./encryption";
 
 export function loadSecrets() {
 
@@ -8,7 +8,7 @@ export function loadSecrets() {
   // 3. Decrypts the string and parses it, assigning the resulting object to process.env
 
   const key = ensure(process.env.ONE_ENV_SECRET);
-  const encrypted = ensure(process.env.ONE_ENV_ENCRYPTED);
+  const encrypted = ensure(process.env.ONE_ENV_ENCRYPTED) as EncryptedDataJson;
   const decrypted = decrypt(encrypted, key);
   const parsed = JSON.parse(decrypted);
   Object.assign(process.env, parsed);

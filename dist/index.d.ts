@@ -1,8 +1,14 @@
-declare function encrypt(plain: string, password: string, updateIv?: boolean): string;
-declare function decrypt(encrypted_authTag_iv: string, password: string): string;
+type EncryptedData = {
+    encrypted: string;
+    authTag: string;
+    iv: string;
+};
+type EncryptedDataJson = `{"encrypted":"${string}","authTag":"${string}","iv":"${string}"}`;
+declare function encrypt(plain: string, password: string, updateIv?: boolean): EncryptedDataJson;
+declare function decrypt(encryptedDataString: EncryptedDataJson, password: string): string;
 
-declare function encryptSecrets(filename?: string): string | undefined;
+declare function encryptSecrets(filename?: string): `{"encrypted":"${string}","authTag":"${string}","iv":"${string}"}` | undefined;
 
 declare function loadSecrets(): void;
 
-export { decrypt, encrypt, encryptSecrets, loadSecrets };
+export { EncryptedData, EncryptedDataJson, decrypt, encrypt, encryptSecrets, loadSecrets };
