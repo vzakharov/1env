@@ -9,6 +9,9 @@ declare function decrypt(encryptedDataString: EncryptedDataJson, password: strin
 
 declare function encryptSecrets(filename?: string): `{"encrypted":"${string}","authTag":"${string}","iv":"${string}"}` | undefined;
 
-declare function loadSecrets(): void;
+type LoadSecretsOptions = {
+    overrideExisting?: boolean;
+};
+declare function loadSecrets({ overrideExisting }?: LoadSecretsOptions): void;
 
-export { EncryptedData, EncryptedDataJson, decrypt, encrypt, encryptSecrets, loadSecrets };
+export { EncryptedData, EncryptedDataJson, LoadSecretsOptions, decrypt, encrypt, encryptSecrets, loadSecrets };

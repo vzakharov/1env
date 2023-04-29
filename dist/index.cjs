@@ -63,12 +63,17 @@ function encryptSecrets(filename = ".secrets.json") {
   return encrypted;
 }
 
-function loadSecrets() {
+function loadSecrets({
+  overrideExisting
+} = {}) {
   const key = vovasUtils.ensure(process.env.ONE_ENV_SECRET);
   const encrypted = vovasUtils.ensure(process.env.ONE_ENV_ENCRYPTED);
   const decrypted = decrypt(encrypted, key);
   const parsed = JSON.parse(decrypted);
-  Object.assign(process.env, parsed);
+  if (overrideExisting)
+    Object.assign(process.env, parsed);
+  else
+    Object.assign(process.env, Object.fromEntries(Object.entries(parsed).filter(([key2]) => !process.env[key2])));
 }
 
 exports.decrypt = decrypt;
