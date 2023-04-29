@@ -1,6 +1,6 @@
 {
   "name": "1env",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "One secret to encrypt them all",
   "exports": {
     ".": {
