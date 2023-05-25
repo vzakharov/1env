@@ -45,7 +45,8 @@ export function encryptSecrets(filename: string = '.secrets.json') {
     // TODO: This looks ugly, so we'll probably want to refactor it
     console.log(`\x1b[33mONE_ENV_ENCRYPTED=${encrypted}\x1b[0m`);
     console.log(`\x1b[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again. Note: this value is public and can be shared\x1b[0m`);
-    throw new Error(`ONE_ENV_ENCRYPTED environment variable is not set`);
+    // Exit with an error code
+    process.exit(1);
   }
 
   return encrypted;
