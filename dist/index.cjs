@@ -56,12 +56,7 @@ async function encryptSecrets(filename = ".secrets.json") {
   let encrypted = encrypt(JSON.stringify(secrets), key);
   if (process.env.ONE_ENV_ENCRYPTED !== encrypted) {
     encrypted = encrypt(JSON.stringify(secrets), key, true);
-    console.log(`\x1B[33mONE_ENV_ENCRYPTED=${encrypted}\x1B[0m`);
-    console.log(`\x1B[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again. Note: this value is public and can be shared\x1B[0m`);
-    const waitEnded = new vovasUtils.Resolvable();
-    setTimeout(() => waitEnded.resolve(), 1e3);
-    await waitEnded.promise;
-    throw new Error(`ONE_ENV_ENCRYPTED environment variable is not set or incorrect`);
+    throw new Error(`Set the ONE_ENV_ENCRYPTED environment variable to the following value: ${encrypted}`);
   }
   return encrypted;
 }
