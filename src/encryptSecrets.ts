@@ -42,14 +42,7 @@ export async function encryptSecrets(filename: string = '.secrets.json') {
 
   if ( process.env.ONE_ENV_ENCRYPTED !== encrypted ) {
     encrypted = encrypt(JSON.stringify(secrets), key, true);
-    // TODO: This looks ugly, so we'll probably want to refactor it
-    console.log(`\x1b[33mONE_ENV_ENCRYPTED=${encrypted}\x1b[0m`);
-    console.log(`\x1b[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again. Note: this value is public and can be shared\x1b[0m`);
-    // Wait (synchronously) for one second (to make sure the log messages are printed before the error) and then throw an error
-    const waitEnded = new Resolvable();
-    setTimeout(() => waitEnded.resolve(), 1000);
-    await waitEnded.promise;
-    throw new Error(`ONE_ENV_ENCRYPTED environment variable is not set or incorrect`);
+    throw new Error(`Set the ONE_ENV_ENCRYPTED environment variable to the following value: ${encrypted}`);
   }
 
   return encrypted;
