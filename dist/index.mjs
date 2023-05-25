@@ -56,7 +56,9 @@ function encryptSecrets(filename = ".secrets.json") {
     encrypted = encrypt(JSON.stringify(secrets), key, true);
     console.log(`\x1B[33mONE_ENV_ENCRYPTED=${encrypted}\x1B[0m`);
     console.log(`\x1B[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again. Note: this value is public and can be shared\x1B[0m`);
-    process.exit(1);
+    process.stdin.setRawMode(true);
+    process.stdin.resume();
+    process.stdin.on("data", process.exit.bind(process, 0));
   }
   return encrypted;
 }
