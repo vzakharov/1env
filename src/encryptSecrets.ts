@@ -1,9 +1,9 @@
 import crypto from 'crypto';
 import fs from 'fs';
-import { $if, is, give } from "vovas-utils";
+import { $if, is, give, Resolvable, ensure } from "vovas-utils";
 import { encrypt } from './encryption';
 
-export function encryptSecrets(filename: string = '.secrets.json') {
+export async function encryptSecrets(filename: string = '.secrets.json') {
   // 1. Reads the `[root]/.secrets.json` file for the secrets (making sure it is git-ignored)
   // 2. Reads the (secret) process.env.ONE_ENV_SECRET variable for the encryption key
   // 3. Encrypts the JSON string
@@ -45,10 +45,11 @@ export function encryptSecrets(filename: string = '.secrets.json') {
     // TODO: This looks ugly, so we'll probably want to refactor it
     console.log(`\x1b[33mONE_ENV_ENCRYPTED=${encrypted}\x1b[0m`);
     console.log(`\x1b[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again. Note: this value is public and can be shared\x1b[0m`);
-    // Wait for keypress and exit
-    process.stdin.setRawMode(true);
-    process.stdin.resume();
-    process.stdin.on('data', process.exit.bind(process, 0));
+    // Wait (synchronously) for one second (to make sure the log messages are printed before the error) and then throw an error
+    const waitEnded = new Resolvable();
+    setTimeout(() => waitEnded.resolve(), 1000);
+    await waitEnded.promise;
+    throw new Error(`ONE_ENV_ENCRYPTED environment variable is not set or incorrect`);
   }
 
   return encrypted;

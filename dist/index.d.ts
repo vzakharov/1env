@@ -7,7 +7,7 @@ type EncryptedDataJson = `{"encrypted":"${string}","authTag":"${string}","iv":"$
 declare function encrypt(plain: string, password: string, updateIv?: boolean): EncryptedDataJson;
 declare function decrypt(encryptedDataString: EncryptedDataJson, password: string): string;
 
-declare function encryptSecrets(filename?: string): `{"encrypted":"${string}","authTag":"${string}","iv":"${string}"}` | undefined;
+declare function encryptSecrets(filename?: string): Promise<`{"encrypted":"${string}","authTag":"${string}","iv":"${string}"}` | undefined>;
 
 type LoadSecretsOptions = {
     overrideExisting?: boolean;

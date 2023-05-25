@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import fs from 'fs';
-import { $if, is, give, ensure } from 'vovas-utils';
+import { $if, is, give, Resolvable, ensure } from 'vovas-utils';
 
 function encrypt(plain, password, updateIv = false) {
   const encryptedData = (() => {
@@ -30,7 +30,7 @@ function createKey(password) {
   return crypto.createHash("sha256").update(password).digest();
 }
 
-function encryptSecrets(filename = ".secrets.json") {
+async function encryptSecrets(filename = ".secrets.json") {
   const secretsFilename = `${process.cwd()}/${filename}`;
   if (!fs.existsSync(secretsFilename)) {
     console.log(`\x1B[33mWarning: no ${secretsFilename} file found, skipping encryption\x1B[0m`);
@@ -56,9 +56,10 @@ function encryptSecrets(filename = ".secrets.json") {
     encrypted = encrypt(JSON.stringify(secrets), key, true);
     console.log(`\x1B[33mONE_ENV_ENCRYPTED=${encrypted}\x1B[0m`);
     console.log(`\x1B[31mSet the ONE_ENV_ENCRYPTED environment variable to the above value, then run the command again. Note: this value is public and can be shared\x1B[0m`);
-    process.stdin.setRawMode(true);
-    process.stdin.resume();
-    process.stdin.on("data", process.exit.bind(process, 0));
+    const waitEnded = new Resolvable();
+    setTimeout(() => waitEnded.resolve(), 1e3);
+    await waitEnded.promise;
+    throw new Error(`ONE_ENV_ENCRYPTED environment variable is not set or incorrect`);
   }
   return encrypted;
 }
